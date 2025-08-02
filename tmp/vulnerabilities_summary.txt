@@ -1,0 +1,8 @@
+- ⚠️ World-writable files found: 12873
+- ⚠️ SUID files found: 122
+- ⚠️ SGID files found: 52
+- ⚠️ Rootkit scan indicates potential infections!
+- ⚠️ SSH config has potentially insecure settings
+- ⚠️ 2 user(s) with UID 0 found (should be only root)
+- ✅ Sensitive file permissions are correct
+- ✅ Firewall is active

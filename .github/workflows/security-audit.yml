@@ -1,0 +1,48 @@
+name: SecureAuditPlus CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Python dependencies
+      run: pip install markdown
+
+    - name: Run audit
+      run: |
+        chmod +x audit.sh
+        ./audit.sh
+
+    - name: Check if report was generated
+      run: test -f report/report.md
+
+    - name: Send report via email
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "SecureAuditPlus Report"
+        to: ${{ secrets.EMAIL_TO }}
+        from: SecureAuditPlus Bot <${{ secrets.EMAIL_USERNAME }}>
+        body: |
+          Hello,
+
+          Please find attached the latest SecureAuditPlus report.
+
+          Regards,
+          SecureAuditPlus CI/CD
+        attachments: report/report.md
